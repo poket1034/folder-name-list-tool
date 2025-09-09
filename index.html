@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>フォルダ内のファイル名・フォルダ名一覧</title>
+    <style>
+      #drop-zone {
+        width: 100%;
+        padding: 50px;
+        border: 2px dashed #888;
+        text-align: center;
+        margin-top: 30px;
+        background-color: #fafafa;
+      }
+      #controls {
+        margin-top: 20px;
+      }
+      #search {
+        padding: 5px;
+        width: 250px;
+      }
+      #output {
+        margin-top: 20px;
+        background: #f0f0f0;
+        padding: 10px;
+        border: 1px solid #ccc;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th, td {
+        border: 1px solid #bbb;
+        padding: 5px;
+        text-align: left;
+      }
+      th {
+        background: #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>📂 フォルダをドラッグ＆ドロップ → 直下のファイル名・フォルダ名を表示</h2>
+    <div id="drop-zone">ここにフォルダをドロップ</div>
+
+    <div id="controls">
+      <input type="text" id="search" placeholder="検索ワードを入力..." />
+      <button onclick="copyOutput()">コピー</button>
+    </div>
+
+    <div id="output">ここに結果が表示されます</div>
+
+    <script>
+      const dropZone = document.getElementById("drop-zone");
+      const output = document.getElementById("output");
+      const searchBox = document.getElementById("search");
+      let allNames = []; // 全ファイル・フォルダ名を保持
+
+      dropZone.addEventListener("dragover", (event) => {
+        event.preventDefault();
+        dropZone.style.backgroundColor = "#e0f7fa";
+      });
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.style.backgroundColor = "#fafafa";
+      });
+      dropZone.addEventListener("drop", async (event) => {
+        event.preventDefault();
+        dropZone.style.backgroundColor = "#fafafa";
+        output.textContent = "読み込み中...";
+        allNames = [];
+        const items = event.dataTransfer.items;
+        const promises = [];
+        for (const item of items) {
+          const entry = item.webkitGetAsEntry?.();
+          if (entry && entry.isDirectory) {
+            promises.push(readTopLevelEntries(entry));
+          }
+        }
+        await Promise.all(promises);
+        renderTable(allNames);
+      });
+
+      // フォルダ直下のファイル・フォルダだけ読む
+      async function readTopLevelEntries(directoryEntry) {
+        const reader = directoryEntry.createReader();
+        return new Promise((resolve) => {
+          reader.readEntries((entries) => {
+            for (const ent of entries) {
+              if (ent.name.startsWith(".")) continue; // 隠しファイル除外
+              allNames.push({
+                name: ent.name,
+                type: ent.isDirectory ? "フォルダ" : "ファイル",
+              });
+            }
+            resolve();
+          });
+        });
+      }
+
+      // テーブル描画
+      function renderTable(data) {
+        if (data.length === 0) {
+          output.textContent = "ファイルやフォルダが見つかりませんでした。";
+          return;
+        }
+        const filtered = data.filter((item) =>
+          item.name.toLowerCase().includes(searchBox.value.toLowerCase())
+        );
+        let html = "<table><tr><th>名前</th><th>種類</th></tr>";
+        for (const item of filtered) {
+          html += `<tr><td>${item.name}</td><td>${item.type}</td></tr>`;
+        }
+        html += "</table>";
+        output.innerHTML = html;
+      }
+
+      // 検索イベント
+      searchBox.addEventListener("input", () => {
+        renderTable(allNames);
+      });
+
+      // コピー機能（テキストとしてコピー）
+      function copyOutput() {
+        const text = allNames
+          .map((item) => item.name)
+          .sort()
+          .join("\n");
+        navigator.clipboard.writeText(text).then(() => {
+          alert("コピーしました！");
+        });
+      }
+    </script>
+  </body>
+</html>

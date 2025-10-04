@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <title>フォルダ内のファイル名・フォルダ名一覧</title>
     <!-- CSS を外部ファイルから読み込み -->
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   </head>
   <body>
     <h2>📂 フォルダをドラッグ＆ドロップ → ファイル名一覧</h2>
@@ -17,11 +17,15 @@
       <button id="clearBtn">削除</button>
     </div>
 
-    
-
     <div id="output">ここに結果が表示されます</div>
 
+    <div style="margin-top:20px;">
+      <a href="/rename">
+        <button>フォルダ名変換ツールへ</button>
+      </a>
+    </div>
+
     <!-- JS を外部ファイルから読み込み -->
-    <script src="js/script.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
   </body>
 </html>

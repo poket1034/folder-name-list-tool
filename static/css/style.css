@@ -90,4 +90,90 @@ body {
     line-height: 1.5;
     white-space: pre-wrap; /* 改行やスペースをそのまま反映 */
   }
+
+  /* rename.css */
+  .container {
+  width: 600px;       /* 好きな幅に調整 */
+  margin: 50px auto;  /* 上下 50px、左右自動で中央 */
+  text-align: center; /* 中のテキストやボタンも中央揃え */
+  }
+  
+  .upload-container {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .custom-file-upload {
+    display: inline-block;
+    padding: 12px 20px;
+    cursor: pointer;
+    background: #4a90e2;
+    color: white;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    transition: background 0.3s;
+  }
+  .custom-file-upload:hover {
+    background: #357ab8;
+  }
+  
+  #drop-zone {
+    border: 2px dashed #4a90e2;
+    border-radius: 12px;
+    padding: 30px;
+    margin: 10px auto;
+    width: 80%;
+    color: #666;
+    font-size: 16px;
+    background: #f9f9f9;
+    transition: background 0.3s;
+  }
+  #drop-zone.dragover {
+    background: #e0f0ff;
+    border-color: #357ab8;
+  }
+  
+  #targetName {
+    padding: 8px 12px;
+    font-size: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin: 10px;
+    background: #f8f8f8;
+    cursor: pointer;
+  }
+  #targetName:hover {
+    border-color: #4a90e2;
+  }
+  
+  #downloadBtn {
+    padding: 10px 20px;
+    font-size: 15px;
+    border: none;
+    border-radius: 6px;
+    background: #28a745;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  #downloadBtn:hover {
+    background: #218838;
+  }
+  
+  #previewList {
+    list-style: none;
+    padding: 0;
+  }
+  
+  #previewList li {
+    border: 1px solid #ccc;
+    margin-bottom: 6px;
+    padding: 6px;
+    font-size: 12px;
+  }
+  
+  
   

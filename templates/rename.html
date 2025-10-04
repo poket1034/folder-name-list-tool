@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>フォルダ名変換ツール</title>
+    <!-- CSS を外部ファイルから読み込み -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  </head>
+  <body>
+    <div class="container">
+        <h2>📂 フォルダ名変換ツール</h2>
+        <div id="dropZone" 
+            style="width:100%;padding:40px;border:2px dashed #888;text-align:center;margin:20px 0;cursor:pointer;">
+            ここにフォルダをドラッグ&ドロップしてください
+        </div>
+
+        <input type="file" id="folderInput" webkitdirectory directory style="display:none;" />
+
+        <form id ="uploadForm" enctype="multipart/form-data">
+            <div class="upload-container">
+                <!-- ファイル選択ボタン -->
+                <label for="folderInput" class="custom-file-upload">📂 フォルダを選択</label>
+                <input type="file" id="folderInput" name="folder" webkitdirectory directory multiple>
+            
+                <!-- 変換オプション -->
+                <select id="targetName" name="target_name">
+                    <option value="fb">fb</option>
+                    <option value="sn">sn</option>
+                    <option value="lap">lap</option>
+                    <option value="x">x</option>
+                    <option value="gdn">gdn</option>
+                    <option value="ydn">ydn</option>
+                </select>
+            
+                <button id="downloadBtn" type="button" >変換してダウンロード</button>
+                <p id="loadingMsg" style="display:none; color: red;">⏳ 変換中...しばらくお待ちください</p>
+            </div>
+        </form>
+    </div>
+
+    <!-- プレビュー -->
+    <div id="previewWrapper">
+        <ul id="previewList"></ul>
+    </div>
+
+    <div style="margin-top:20px;">
+        <a href="/">
+        <button>ファイル一覧ツールへ戻る</button>
+        </a>
+    </div>
+
+    <!-- JS を外部ファイルから読み込み（必要なら） -->
+    <script src="{{ url_for('static', filename='js/rename.js') }}"></script>
+  </body>
+</html>
